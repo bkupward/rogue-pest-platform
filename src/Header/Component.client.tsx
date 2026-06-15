@@ -1,41 +1,41 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import type { Header } from '@/payload-types'
+import type { CompanyInfo, Header, Location, Service } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
 
 interface HeaderClientProps {
   data: Header
+  companyInfo: CompanyInfo
+  services: Service[]
+  locations: Location[]
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
-  const pathname = usePathname()
-
-  useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
-
+export const HeaderClient: React.FC<HeaderClientProps> = ({
+  data,
+  companyInfo,
+  services,
+  locations,
+}) => {
+  // The Figma header is always white/light (it does not adopt the dark hero
+  // theme), so we render it on a solid light surface regardless of the page.
+  const logoSrc =
+    companyInfo?.logo && typeof companyInfo.logo === 'object' ? companyInfo.logo.url : undefined
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
+    <header className="sticky top-0 z-50 border-b border-border bg-white text-foreground">
+      <div className="container flex items-center justify-between gap-4 py-[10px]">
+        <Link href="/" className="flex-shrink-0">
+          <Logo loading="eager" priority="high" className="h-[50px] w-auto" src={logoSrc} />
         </Link>
-        <HeaderNav data={data} />
+        <HeaderNav
+          data={data}
+          companyInfo={companyInfo}
+          services={services}
+          locations={locations}
+        />
       </div>
     </header>
   )

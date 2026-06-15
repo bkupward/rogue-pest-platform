@@ -51,7 +51,7 @@ export default async function Service({ params: paramsPromise }: Args) {
   if (!service) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="pb-24">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -59,33 +59,26 @@ export default async function Service({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <div className="max-w-[48rem] mx-auto">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{service.title}</h1>
-
-            {service.featuredImage && typeof service.featuredImage === 'object' && (
-              <Media
-                className="mb-8"
-                imgClassName="rounded"
-                priority
-                resource={service.featuredImage}
-              />
-            )}
-
-            {service.shortDescription && (
-              <p className="mb-8 text-lg text-muted-foreground">{service.shortDescription}</p>
-            )}
-          </div>
-
-          {service.content && (
-            <RichText
-              className="max-w-[48rem] mx-auto"
-              data={service.content}
-              enableGutter={false}
-            />
+      {/* Page header band */}
+      <header className="bg-secondary py-16 md:py-20">
+        <div className="container max-w-3xl text-center">
+          <h1>{service.title}</h1>
+          {service.shortDescription && (
+            <p className="mt-4 text-lg text-muted-foreground">{service.shortDescription}</p>
           )}
         </div>
+      </header>
+
+      <div className="container">
+        {service.featuredImage && typeof service.featuredImage === 'object' && (
+          <div className="mx-auto -mt-8 mb-12 max-w-4xl overflow-hidden rounded-lg shadow-md">
+            <Media imgClassName="w-full object-cover" priority resource={service.featuredImage} />
+          </div>
+        )}
+
+        {service.content && (
+          <RichText className="mx-auto max-w-3xl" data={service.content} enableGutter={false} />
+        )}
       </div>
     </article>
   )

@@ -51,7 +51,7 @@ export default async function Location({ params: paramsPromise }: Args) {
   if (!location) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="pb-24">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -59,33 +59,26 @@ export default async function Location({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <div className="max-w-[48rem] mx-auto">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{location.name}</h1>
-
-            {location.heroImage && typeof location.heroImage === 'object' && (
-              <Media
-                className="mb-8"
-                imgClassName="rounded"
-                priority
-                resource={location.heroImage}
-              />
-            )}
-
-            {location.shortDescription && (
-              <p className="mb-8 text-lg text-muted-foreground">{location.shortDescription}</p>
-            )}
-          </div>
-
-          {location.content && (
-            <RichText
-              className="max-w-[48rem] mx-auto"
-              data={location.content}
-              enableGutter={false}
-            />
+      {/* Page header band */}
+      <header className="bg-secondary py-16 md:py-20">
+        <div className="container max-w-3xl text-center">
+          <h1>{location.name}</h1>
+          {location.shortDescription && (
+            <p className="mt-4 text-lg text-muted-foreground">{location.shortDescription}</p>
           )}
         </div>
+      </header>
+
+      <div className="container">
+        {location.heroImage && typeof location.heroImage === 'object' && (
+          <div className="mx-auto -mt-8 mb-12 max-w-4xl overflow-hidden rounded-lg shadow-md">
+            <Media imgClassName="w-full object-cover" priority resource={location.heroImage} />
+          </div>
+        )}
+
+        {location.content && (
+          <RichText className="mx-auto max-w-3xl" data={location.content} enableGutter={false} />
+        )}
       </div>
     </article>
   )

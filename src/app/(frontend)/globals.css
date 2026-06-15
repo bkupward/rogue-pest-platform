@@ -11,14 +11,28 @@
 @custom-variant 2xl (@media (width >= theme(--breakpoint-2xl)));
 
 @layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
+  /*
+   * Base heading scale for headings rendered OUTSIDE rich text (block section
+   * headings etc.). Rich-text headings are styled by the @tailwindcss/typography
+   * plugin within `.prose`, which has class-level specificity and still wins there.
+   */
+  h1 {
+    @apply text-4xl font-bold tracking-tight md:text-5xl;
+  }
+  h2 {
+    @apply text-3xl font-bold tracking-tight md:text-4xl;
+  }
+  h3 {
+    @apply text-xl font-semibold md:text-2xl;
+  }
+  h4 {
+    @apply text-lg font-semibold;
+  }
+  h5 {
+    @apply text-base font-semibold;
+  }
   h6 {
-    font-weight: unset;
-    font-size: unset;
+    @apply text-sm font-semibold;
   }
 }
 
@@ -45,6 +59,8 @@
   --breakpoint-2xl: 86rem;
   --font-mono: var(--font-geist-mono);
   --font-sans: var(--font-geist-sans);
+  --font-heading: var(--font-barlow);
+  --font-prompt: var(--font-prompt);
 }
 
 @layer utilities {
@@ -88,24 +104,25 @@
 
 :root {
   --background: oklch(100% 0 0deg);
-  --foreground: oklch(14.5% 0 0deg);
+  --foreground: oklch(29.6% 0.005 39.4deg);
   --card: oklch(96.5% 0.005 265deg);
-  --card-foreground: oklch(14.5% 0 0deg);
+  --card-foreground: oklch(29.6% 0.005 39.4deg);
   --popover: oklch(100% 0 0deg);
-  --popover-foreground: oklch(14.5% 0 0deg);
-  --primary: oklch(20.5% 0 0deg);
+  --popover-foreground: oklch(29.6% 0.005 39.4deg);
+  /* Brand: Rogue Pest red #BE1E2D (confirmed); body text #2F2C2B */
+  --primary: oklch(51.8% 0.192 23.4deg);
   --primary-foreground: oklch(98.5% 0 0deg);
-  --secondary: oklch(97% 0 0deg);
-  --secondary-foreground: oklch(20.5% 0 0deg);
+  --secondary: oklch(96.5% 0.02 23deg);
+  --secondary-foreground: oklch(29.6% 0.005 39.4deg);
   --muted: oklch(97% 0 0deg);
   --muted-foreground: oklch(55.6% 0 0deg);
-  --accent: oklch(97% 0 0deg);
-  --accent-foreground: oklch(20.5% 0 0deg);
+  --accent: oklch(95% 0.03 23deg);
+  --accent-foreground: oklch(40% 0.14 23.4deg);
   --destructive: oklch(57.7% 0.245 27.325deg);
   --destructive-foreground: oklch(57.7% 0.245 27.325deg);
   --border: oklch(92.2% 0 0deg);
   --input: oklch(92.2% 0 0deg);
-  --ring: oklch(70.8% 0 0deg);
+  --ring: oklch(51.8% 0.192 23.4deg);
   --chart-1: oklch(64.6% 0.222 41.116deg);
   --chart-2: oklch(60% 0.118 184.704deg);
   --chart-3: oklch(39.8% 0.07 227.392deg);
@@ -123,6 +140,9 @@
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);
+  /* Dark brand surface — used by the footer and any dark band (brand charcoal #2F2C2B) */
+  --brand-dark: oklch(29.6% 0.005 39.4deg);
+  --brand-dark-foreground: oklch(98.5% 0 0deg);
 }
 
 [data-theme='dark'] {
@@ -132,19 +152,19 @@
   --card-foreground: oklch(98.5% 0 0deg);
   --popover: oklch(14.5% 0 0deg);
   --popover-foreground: oklch(98.5% 0 0deg);
-  --primary: oklch(98.5% 0 0deg);
-  --primary-foreground: oklch(20.5% 0 0deg);
-  --secondary: oklch(26.9% 0 0deg);
+  --primary: oklch(62% 0.19 23.4deg);
+  --primary-foreground: oklch(98.5% 0 0deg);
+  --secondary: oklch(26.9% 0.02 23deg);
   --secondary-foreground: oklch(98.5% 0 0deg);
   --muted: oklch(26.9% 0 0deg);
   --muted-foreground: oklch(70.8% 0 0deg);
-  --accent: oklch(26.9% 0 0deg);
-  --accent-foreground: oklch(98.5% 0 0deg);
+  --accent: oklch(28% 0.05 23deg);
+  --accent-foreground: oklch(95% 0.02 23deg);
   --destructive: oklch(39.6% 0.141 25.723deg);
   --destructive-foreground: oklch(63.7% 0.237 25.331deg);
   --border: oklch(26.9% 0 0deg);
   --input: oklch(26.9% 0 0deg);
-  --ring: oklch(43.9% 0 0deg);
+  --ring: oklch(62% 0.19 23.4deg);
   --chart-1: oklch(48.8% 0.243 264.376deg);
   --chart-2: oklch(69.6% 0.17 162.48deg);
   --chart-3: oklch(76.9% 0.188 70.08deg);
@@ -161,6 +181,9 @@
   --success: oklch(28% 0.1 200deg);
   --warning: oklch(35% 0.08 70deg);
   --error: oklch(45% 0.1 25deg);
+  /* Dark brand surface — slightly deeper in dark mode */
+  --brand-dark: oklch(18% 0.005 39deg);
+  --brand-dark-foreground: oklch(98.5% 0 0deg);
 }
 
 @theme inline {
@@ -203,6 +226,8 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-dark-foreground: var(--brand-dark-foreground);
 }
 
 @layer base {
@@ -211,6 +236,29 @@
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+  }
+}
+
+/*
+ * Reusable design-system utilities. Additive — no existing markup uses these yet,
+ * so they introduce no visual change until applied during the section phases.
+ */
+@layer components {
+  /* Standard section vertical rhythm */
+  .section-y {
+    @apply py-16 md:py-24;
+  }
+  /* Eyebrow / overline above a heading */
+  .eyebrow {
+    @apply text-sm font-semibold uppercase tracking-wide text-muted-foreground;
+  }
+  /* Standard card surface (rounded, bordered, soft shadow) */
+  .surface-card {
+    @apply rounded-lg border border-border bg-card shadow-sm;
+  }
+  /* Hover-lift interaction for clickable cards */
+  .card-hover {
+    @apply transition-shadow hover:shadow-md;
   }
 }
 

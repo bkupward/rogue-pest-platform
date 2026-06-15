@@ -71,6 +71,8 @@ export interface Config {
     posts: Post;
     services: Service;
     locations: Location;
+    testimonials: Testimonial;
+    faqs: Faq;
     media: Media;
     categories: Category;
     users: User;
@@ -95,6 +97,8 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     locations: LocationsSelect<false> | LocationsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -116,10 +120,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'company-info': CompanyInfo;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'company-info': CompanyInfoSelect<false> | CompanyInfoSelect<true>;
   };
   locale: null;
   widgets: {
@@ -163,7 +169,9 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'inner' | 'mediumImpact' | 'lowImpact';
+    badge?: string | null;
+    showRatings?: boolean | null;
     richText?: {
       root: {
         type: string;
@@ -203,9 +211,45 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    trustBullets?:
+      | {
+          text: string;
+          icon?: ('users' | 'message' | 'badge' | 'shield' | 'check' | 'star' | 'clock') | null;
+          id?: string | null;
+        }[]
+      | null;
+    ratingBadge?: {
+      enabled?: boolean | null;
+      source?: ('google' | 'facebook') | null;
+      /**
+       * e.g. "5.0"
+       */
+      rating?: string | null;
+      /**
+       * Optional, e.g. "Customer Rating".
+       */
+      label?: string | null;
+    };
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ServicesShowcaseBlock
+    | TestimonialsBlock
+    | FAQBlock
+    | ServiceAreasBlock
+    | FeatureGridBlock
+    | StatsBlock
+    | OurStoryBlock
+    | ServicesTabsBlock
+    | ProcessBlock
+    | WhyChooseUsBlock
+    | BlogPostsBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -787,6 +831,23 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesShowcaseBlock".
+ */
+export interface ServicesShowcaseBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  populateBy?: ('automatic' | 'manual') | null;
+  selectedServices?: (number | Service)[] | null;
+  showImages?: boolean | null;
+  showExcerpts?: boolean | null;
+  buttonText?: string | null;
+  buttonUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "services".
  */
 export interface Service {
@@ -827,6 +888,23 @@ export interface Service {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  populateBy?: ('automatic' | 'manual') | null;
+  featuredOnly?: boolean | null;
+  filterByLocation?: (number | null) | Location;
+  limit?: number | null;
+  selectedTestimonials?: (number | Testimonial)[] | null;
+  showRating?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "locations".
  */
 export interface Location {
@@ -864,6 +942,285 @@ export interface Location {
   metaDescription?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  customerName: string;
+  reviewText: string;
+  /**
+   * Star rating from 1 to 5.
+   */
+  rating?: number | null;
+  location?: (number | null) | Location;
+  featured?: boolean | null;
+  /**
+   * Lower numbers appear first in curated lists.
+   */
+  displayOrder?: number | null;
+  googleReviewUrl?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  populateBy?: ('automatic' | 'manual') | null;
+  filterByTopic?: ('general' | 'termite' | 'mosquito' | 'rodent' | 'safety' | 'pricing') | null;
+  filterByService?: (number | null) | Service;
+  filterByLocation?: (number | null) | Location;
+  limit?: number | null;
+  selectedFaqs?: (number | Faq)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  question: string;
+  answer: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  topic?: ('general' | 'termite' | 'mosquito' | 'rodent' | 'safety' | 'pricing') | null;
+  relatedService?: (number | null) | Service;
+  relatedLocation?: (number | null) | Location;
+  /**
+   * Lower numbers appear first in curated lists.
+   */
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceAreasBlock".
+ */
+export interface ServiceAreasBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  description?: string | null;
+  subheading?: string | null;
+  populateBy?: ('automatic' | 'manual') | null;
+  selectedLocations?: (number | Location)[] | null;
+  showImages?: boolean | null;
+  showExcerpts?: boolean | null;
+  buttonText?: string | null;
+  buttonUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceAreas';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock".
+ */
+export interface FeatureGridBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  layout?: ('grid' | 'steps') | null;
+  items?:
+    | {
+        /**
+         * Optional icon name or emoji (shown in grid layout).
+         */
+        icon?: string | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBlock".
+ */
+export interface StatsBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  stats?:
+    | {
+        value: string;
+        label: string;
+        prefix?: string | null;
+        suffix?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stats';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OurStoryBlock".
+ */
+export interface OurStoryBlock {
+  eyebrow?: string | null;
+  heading: string;
+  body?: string | null;
+  image?: (number | null) | Media;
+  checklist?:
+    | {
+        title: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  stats?:
+    | {
+        value: string;
+        suffix?: string | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  showTruck?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ourStory';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesTabsBlock".
+ */
+export interface ServicesTabsBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  populateBy?: ('automatic' | 'manual') | null;
+  selectedServices?: (number | Service)[] | null;
+  /**
+   * Max number of service tabs to show.
+   */
+  limit?: number | null;
+  defaultImage?: (number | null) | Media;
+  ctaHeading?: string | null;
+  /**
+   * Use {phone} to insert the company phone number.
+   */
+  ctaBody?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesTabs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock".
+ */
+export interface ProcessBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  /**
+   * Each step shows an icon, a title and a short description.
+   */
+  steps?:
+    | {
+        icon?: (number | null) | Media;
+        iconColor?: ('yellow' | 'white') | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  cta?: {
+    /**
+     * e.g. a phone number. Leave blank to hide the button.
+     */
+    label?: string | null;
+    /**
+     * e.g. tel:8663707378
+     */
+    url?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'process';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhyChooseUsBlock".
+ */
+export interface WhyChooseUsBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * Rendered as a two-column grid inside the red card.
+   */
+  features?:
+    | {
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  buttons?:
+    | {
+        label: string;
+        /**
+         * e.g. /contact or tel:8663707378
+         */
+        url?: string | null;
+        showPhoneIcon?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'whyChooseUs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlogPostsBlock".
+ */
+export interface BlogPostsBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blogPosts';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1072,6 +1429,14 @@ export interface PayloadLockedDocument {
         value: number | Location;
       } | null)
     | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: number | Faq;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1155,6 +1520,8 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
+        badge?: T;
+        showRatings?: T;
         richText?: T;
         links?:
           | T
@@ -1171,6 +1538,21 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        trustBullets?:
+          | T
+          | {
+              text?: T;
+              icon?: T;
+              id?: T;
+            };
+        ratingBadge?:
+          | T
+          | {
+              enabled?: T;
+              source?: T;
+              rating?: T;
+              label?: T;
+            };
         media?: T;
       };
   layout?:
@@ -1181,6 +1563,17 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        servicesShowcase?: T | ServicesShowcaseBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        faq?: T | FAQBlockSelect<T>;
+        serviceAreas?: T | ServiceAreasBlockSelect<T>;
+        featureGrid?: T | FeatureGridBlockSelect<T>;
+        stats?: T | StatsBlockSelect<T>;
+        ourStory?: T | OurStoryBlockSelect<T>;
+        servicesTabs?: T | ServicesTabsBlockSelect<T>;
+        process?: T | ProcessBlockSelect<T>;
+        whyChooseUs?: T | WhyChooseUsBlockSelect<T>;
+        blogPosts?: T | BlogPostsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1282,6 +1675,226 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesShowcaseBlock_select".
+ */
+export interface ServicesShowcaseBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  populateBy?: T;
+  selectedServices?: T;
+  showImages?: T;
+  showExcerpts?: T;
+  buttonText?: T;
+  buttonUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  populateBy?: T;
+  featuredOnly?: T;
+  filterByLocation?: T;
+  limit?: T;
+  selectedTestimonials?: T;
+  showRating?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock_select".
+ */
+export interface FAQBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  populateBy?: T;
+  filterByTopic?: T;
+  filterByService?: T;
+  filterByLocation?: T;
+  limit?: T;
+  selectedFaqs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceAreasBlock_select".
+ */
+export interface ServiceAreasBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  subheading?: T;
+  populateBy?: T;
+  selectedLocations?: T;
+  showImages?: T;
+  showExcerpts?: T;
+  buttonText?: T;
+  buttonUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock_select".
+ */
+export interface FeatureGridBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  layout?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBlock_select".
+ */
+export interface StatsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        prefix?: T;
+        suffix?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OurStoryBlock_select".
+ */
+export interface OurStoryBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  body?: T;
+  image?: T;
+  checklist?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  showTruck?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesTabsBlock_select".
+ */
+export interface ServicesTabsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  populateBy?: T;
+  selectedServices?: T;
+  limit?: T;
+  defaultImage?: T;
+  ctaHeading?: T;
+  ctaBody?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock_select".
+ */
+export interface ProcessBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  steps?:
+    | T
+    | {
+        icon?: T;
+        iconColor?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  cta?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhyChooseUsBlock_select".
+ */
+export interface WhyChooseUsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  image?: T;
+  features?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  buttons?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        showPhoneIcon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlogPostsBlock_select".
+ */
+export interface BlogPostsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1340,6 +1953,35 @@ export interface LocationsSelect<T extends boolean = true> {
   content?: T;
   metaTitle?: T;
   metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  customerName?: T;
+  reviewText?: T;
+  rating?: T;
+  location?: T;
+  featured?: T;
+  displayOrder?: T;
+  googleReviewUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  topic?: T;
+  relatedService?: T;
+  relatedLocation?: T;
+  displayOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1761,6 +2403,17 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  promoBar?: {
+    enabled?: boolean | null;
+    /**
+     * e.g. "Keep your backyard bite-free all season — Call Now!"
+     */
+    message?: string | null;
+  };
+  /**
+   * Link target for the "Customer Portal" link in the top bar.
+   */
+  customerPortalUrl?: string | null;
   navItems?:
     | {
         link: {
@@ -1790,6 +2443,7 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  tagline?: string | null;
   navItems?:
     | {
         link: {
@@ -1810,6 +2464,62 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  supportLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  social?: {
+    facebook?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+    instagram?: string | null;
+  };
+  credit?: {
+    prefix?: string | null;
+    name?: string | null;
+    url?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Site-wide business details (phone, address, hours, ratings, primary CTA) read across the whole site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company-info".
+ */
+export interface CompanyInfo {
+  id: number;
+  logo?: (number | null) | Media;
+  logoIcon?: (number | null) | Media;
+  companyName: string;
+  phone: string;
+  email?: string | null;
+  streetAddress?: string | null;
+  city?: string | null;
+  state?: string | null;
+  zip?: string | null;
+  businessHours?: string | null;
+  googleRating?: string | null;
+  facebookRating?: string | null;
+  primaryCtaText?: string | null;
+  primaryCtaUrl?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1818,6 +2528,13 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  promoBar?:
+    | T
+    | {
+        enabled?: T;
+        message?: T;
+      };
+  customerPortalUrl?: T;
   navItems?:
     | T
     | {
@@ -1841,6 +2558,7 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  tagline?: T;
   navItems?:
     | T
     | {
@@ -1855,6 +2573,58 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  supportLinks?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  social?:
+    | T
+    | {
+        facebook?: T;
+        linkedin?: T;
+        youtube?: T;
+        instagram?: T;
+      };
+  credit?:
+    | T
+    | {
+        prefix?: T;
+        name?: T;
+        url?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company-info_select".
+ */
+export interface CompanyInfoSelect<T extends boolean = true> {
+  logo?: T;
+  logoIcon?: T;
+  companyName?: T;
+  phone?: T;
+  email?: T;
+  streetAddress?: T;
+  city?: T;
+  state?: T;
+  zip?: T;
+  businessHours?: T;
+  googleRating?: T;
+  facebookRating?: T;
+  primaryCtaText?: T;
+  primaryCtaUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

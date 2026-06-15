@@ -20,7 +20,10 @@ const collections: CollectionSlug[] = [
   'search',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer']
+// Narrowed to literals (not `GlobalSlug[]`) so the clear loop below only targets
+// globals that actually have `navItems`. The CompanyInfo global has no navItems,
+// so widening to GlobalSlug would break the `{ navItems: [] }` reset.
+const globals = ['header', 'footer'] as const satisfies readonly GlobalSlug[]
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
