@@ -249,6 +249,11 @@ export interface Page {
     | ProcessBlock
     | WhyChooseUsBlock
     | BlogPostsBlock
+    | OurApproachBlock
+    | MarqueeBlock
+    | MissionBlock
+    | PromoBannerBlock
+    | WhyChooseAccordionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1224,6 +1229,102 @@ export interface BlogPostsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OurApproachBlock".
+ */
+export interface OurApproachBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  listHeading?: string | null;
+  items?:
+    | {
+        label: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  footnote?: string | null;
+  buttonLabel?: string | null;
+  buttonUrl?: string | null;
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ourApproach';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MarqueeBlock".
+ */
+export interface MarqueeBlock {
+  text: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'marquee';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionBlock".
+ */
+export interface MissionBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  tabs?:
+    | {
+        label: string;
+        heading?: string | null;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  card?: {
+    heading?: string | null;
+    body?: string | null;
+    phone?: string | null;
+    phoneUrl?: string | null;
+    secondaryLabel?: string | null;
+    secondaryUrl?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mission';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PromoBannerBlock".
+ */
+export interface PromoBannerBlock {
+  heading?: string | null;
+  body?: string | null;
+  buttonLabel?: string | null;
+  buttonUrl?: string | null;
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'promoBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhyChooseAccordionBlock".
+ */
+export interface WhyChooseAccordionBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  body?: string | null;
+  buttonLabel?: string | null;
+  buttonUrl?: string | null;
+  items?:
+    | {
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'whyChooseAccordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1574,6 +1675,11 @@ export interface PagesSelect<T extends boolean = true> {
         process?: T | ProcessBlockSelect<T>;
         whyChooseUs?: T | WhyChooseUsBlockSelect<T>;
         blogPosts?: T | BlogPostsBlockSelect<T>;
+        ourApproach?: T | OurApproachBlockSelect<T>;
+        marquee?: T | MarqueeBlockSelect<T>;
+        mission?: T | MissionBlockSelect<T>;
+        promoBanner?: T | PromoBannerBlockSelect<T>;
+        whyChooseAccordion?: T | WhyChooseAccordionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1890,6 +1996,99 @@ export interface BlogPostsBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OurApproachBlock_select".
+ */
+export interface OurApproachBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  listHeading?: T;
+  items?:
+    | T
+    | {
+        label?: T;
+        text?: T;
+        id?: T;
+      };
+  footnote?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MarqueeBlock_select".
+ */
+export interface MarqueeBlockSelect<T extends boolean = true> {
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionBlock_select".
+ */
+export interface MissionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  tabs?:
+    | T
+    | {
+        label?: T;
+        heading?: T;
+        body?: T;
+        id?: T;
+      };
+  card?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        phone?: T;
+        phoneUrl?: T;
+        secondaryLabel?: T;
+        secondaryUrl?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PromoBannerBlock_select".
+ */
+export interface PromoBannerBlockSelect<T extends boolean = true> {
+  heading?: T;
+  body?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhyChooseAccordionBlock_select".
+ */
+export interface WhyChooseAccordionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  body?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

@@ -484,20 +484,89 @@ async function main() {
   )
   const aboutLayout: any[] = [
     {
-      blockType: 'content',
-      columns: [
-        {
-          size: 'full',
-          richText: doc(
-            headingNode('About Rogue Pest Solutions', 'h2'),
-            paragraphNode(
-              'Rogue Pest Solutions is your trusted partner in effective and eco-friendly pest management in Alabama. Specializing in residential and commercial pest control, we expertly handle ants, termites, mosquitoes, and more.',
-            ),
-          ),
-          enableLink: false,
-        },
+      blockType: 'ourStory',
+      eyebrow: 'Who We Are',
+      heading: 'Our Story',
+      body: 'At Rogue Pest Solutions, we’re committed to delivering dependable pest control solutions that protect what matters most—your home, your business, and your peace of mind. Our team brings years of hands-on experience and local expertise to every job, ensuring treatments are tailored to the specific pest challenges in your area.',
+      checklist: [
+        { title: 'Customized Treatments:', text: 'Every service is tailored to your property and pest concerns' },
+        { title: 'Safe & Effective Solutions:', text: 'Family- and pet-friendly products with proven results' },
+        { title: 'Reliable Local Experts:', text: 'Experienced technicians who understand your area and its pest challenges' },
+      ],
+      link: { type: 'custom', url: '/contact', label: 'Contact Us', newTab: false },
+      stats: [
+        { value: '450', suffix: '+', label: 'Homes & Businesses Protected' },
+        { value: '1,200', suffix: '+', label: 'Inspections Completed' },
+        { value: '6,800', suffix: '+', label: 'Treatments Administered' },
+        { value: '250', suffix: '+', label: 'Five-Star Reviews' },
+      ],
+      showTruck: false,
+    },
+    {
+      blockType: 'ourApproach',
+      eyebrow: 'Our Approach',
+      heading: 'Who We Serve',
+      intro: 'At Rogue Pest Solutions, we help homeowners and businesses stay protected with reliable, results-driven pest control services tailored to local conditions.',
+      listHeading: 'We help:',
+      items: [
+        { label: 'Inspection:', text: 'A thorough evaluation of your property to identify pest activity, entry points, and risk areas' },
+        { label: 'Treatment:', text: 'Targeted applications including sprays, baits, and traps to effectively eliminate active infestations' },
+        { label: 'Prevention:', text: 'Proactive solutions such as sealing entry points and reducing attractants to stop pests from returning' },
+        { label: 'Monitoring:', text: 'Ongoing service and follow-ups to ensure long-term protection and a pest-free environment' },
+      ],
+      footnote: 'Serving communities across Alabama—including Greater Birmingham, Gulf Coast, Huntsville, Cullman, and Gadsden—we offer comprehensive pest control programs, one-time treatments, and commercial pest management solutions you can depend on.',
+      buttonLabel: 'Contact Us',
+      buttonUrl: '/contact',
+      ...(heroMediaId ? { image: heroMediaId } : {}),
+    },
+    {
+      blockType: 'marquee',
+      text: 'Pest Control Services in Greater Birmingham • Gulf Coast • Huntsville • Cullman • Rainbow City / Gadsden — Residential & Commercial Solutions',
+    },
+    {
+      blockType: 'mission',
+      heading: 'We Are on a Mission',
+      subheading: 'We’re dedicated to protecting homes and businesses with reliable, long-lasting pest control solutions you can trust.',
+      tabs: [
+        { label: 'Our Mission', heading: 'Our Mission', body: 'To deliver safe, effective, and customized pest control services that not only eliminate current issues but also prevent future infestations—giving our customers confidence and peace of mind.' },
+        { label: 'Our Values', heading: 'Our Values', body: 'Integrity, reliability, and genuine care guide everything we do. We treat every home and business like our own—earning trust through honest communication and dependable results.' },
+      ],
+      card: {
+        heading: 'Contact Rogue Pest Solutions Today',
+        body: 'If you’re facing pest issues in your Alabama home, don’t wait for the problem to worsen. Contact Rogue Pest Solutions at 866-370-7378 for expert residential pest control services. Our team is ready to inspect your property, provide tailored solutions, and help you maintain a pest-free home. Call today to schedule your appointment!',
+        phone: '866-370-7378',
+        phoneUrl: 'tel:8663707378',
+        secondaryLabel: 'Learn More',
+        secondaryUrl: '/contact',
+      },
+    },
+    {
+      blockType: 'promoBanner',
+      heading: 'Discover the Long-Term Benefits of Sentricon',
+      body: 'Protect Your Home from Termites with Rogue Pest Solutions and Sentricon’s Always Active Baiting System.',
+      buttonLabel: 'Learn More',
+      buttonUrl: '/services',
+      ...(heroMediaId ? { image: heroMediaId } : {}),
+    },
+    {
+      blockType: 'whyChooseAccordion',
+      eyebrow: 'Why Choose Us',
+      heading: 'Reliable Pest Control—No Surprises, Just Results',
+      body: 'When you choose Rogue Pest Solutions, you’re getting more than a basic treatment. We provide inspection-driven pest control tailored to your home or business across Alabama. Our team identifies the problem, finds how pests are getting in, treats the right areas, and clearly explains every step—so you always know what to expect. No guesswork. No shortcuts. Just honest service and dependable results.',
+      buttonLabel: 'Request Free Quote',
+      buttonUrl: '/contact',
+      items: [
+        { title: 'Experienced Professionals', body: 'Our skilled technicians bring years of hands-on experience and local knowledge to effectively handle any pest problem.' },
+        { title: 'Licensed & Insured', body: 'Fully licensed and insured, so you’re protected and in trusted hands on every visit.' },
+        { title: 'Safe & Family-Friendly Treatments', body: 'We use carefully selected products and methods that are effective against pests while being safe for your family and pets.' },
+        { title: 'Customized Solutions', body: 'Every treatment plan is tailored to your property and your specific pest concerns.' },
+        { title: 'Family-Owned', body: 'A family-owned business that treats your home and family like our own.' },
+        { title: 'Locally Owned', body: 'Proudly local and invested in the Alabama communities we serve.' },
+        { title: 'Customer Satisfaction Guaranteed', body: 'We stand behind our work with a satisfaction guarantee on every service.' },
       ],
     },
+    { blockType: 'testimonials', heading: 'What Our Customers Say', subheading: 'Trusted by Birmingham, Cullman, Gadsden, Rainbow City, Foley and Huntsville, Alabama Homeowners', populateBy: 'automatic', featuredOnly: true, showRating: true, limit: 3 },
+    { blockType: 'serviceAreas', eyebrow: 'Local Service You Can Count On', heading: 'Proudly Serving Homes & Businesses Across Alabama', description: 'Rogue Pest Solutions provides reliable pest control services throughout Birmingham, Huntsville, Cullman, Foley, Rainbow City, Gadsden, and surrounding Alabama communities.', populateBy: 'automatic' },
   ]
 
   await upsert(

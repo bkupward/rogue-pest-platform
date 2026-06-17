@@ -9,10 +9,15 @@ import { FAQ } from '../../blocks/FAQ/config'
 import { FeatureGrid } from '../../blocks/FeatureGrid/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
+import { Marquee } from '../../blocks/Marquee/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { Mission } from '../../blocks/Mission/config'
+import { OurApproach } from '../../blocks/OurApproach/config'
 import { OurStory } from '../../blocks/OurStory/config'
 import { Process } from '../../blocks/Process/config'
+import { PromoBanner } from '../../blocks/PromoBanner/config'
 import { ServiceAreas } from '../../blocks/ServiceAreas/config'
+import { WhyChooseAccordion } from '../../blocks/WhyChooseAccordion/config'
 import { ServicesShowcase } from '../../blocks/ServicesShowcase/config'
 import { ServicesTabs } from '../../blocks/ServicesTabs/config'
 import { Stats } from '../../blocks/Stats/config'
@@ -100,6 +105,11 @@ export const Pages: CollectionConfig<'pages'> = {
                 Process,
                 WhyChooseUs,
                 BlogPosts,
+                OurApproach,
+                Marquee,
+                Mission,
+                PromoBanner,
+                WhyChooseAccordion,
               ],
               required: true,
               admin: {

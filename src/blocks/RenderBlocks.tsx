@@ -9,10 +9,15 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FAQBlock } from '@/blocks/FAQ/Component'
 import { FeatureGridBlock } from '@/blocks/FeatureGrid/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { MarqueeBlock } from '@/blocks/Marquee/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { MissionBlock } from '@/blocks/Mission/Component'
+import { OurApproachBlock } from '@/blocks/OurApproach/Component'
 import { OurStoryBlock } from '@/blocks/OurStory/Component'
 import { ProcessBlock } from '@/blocks/Process/Component'
+import { PromoBannerBlock } from '@/blocks/PromoBanner/Component'
 import { ServiceAreasBlock } from '@/blocks/ServiceAreas/Component'
+import { WhyChooseAccordionBlock } from '@/blocks/WhyChooseAccordion/Component'
 import { ServicesShowcaseBlock } from '@/blocks/ServicesShowcase/Component'
 import { ServicesTabsBlock } from '@/blocks/ServicesTabs/Component'
 import { StatsBlock } from '@/blocks/Stats/Component'
@@ -36,6 +41,11 @@ const blockComponents = {
   process: ProcessBlock,
   whyChooseUs: WhyChooseUsBlock,
   blogPosts: BlogPostsBlock,
+  ourApproach: OurApproachBlock,
+  marquee: MarqueeBlock,
+  mission: MissionBlock,
+  promoBanner: PromoBannerBlock,
+  whyChooseAccordion: WhyChooseAccordionBlock,
 }
 
 /*
@@ -52,6 +62,11 @@ const selfSpacedBlocks = new Set([
   'process',
   'whyChooseUs',
   'blogPosts',
+  'ourApproach',
+  'marquee',
+  'mission',
+  'promoBanner',
+  'whyChooseAccordion',
   'faq',
   'featureGrid',
   'servicesShowcase',

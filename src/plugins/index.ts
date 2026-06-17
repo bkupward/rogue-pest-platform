@@ -3,6 +3,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -88,5 +89,18 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  // Vercel Blob storage for the Media collection. Required for uploads to work on
+  // Vercel (its filesystem is read-only/ephemeral). `enabled` is gated on the token
+  // so local dev without BLOB_READ_WRITE_TOKEN keeps using local disk (staticDir).
+  vercelBlobStorage({
+    enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    collections: {
+      media: true,
+    },
+    token: process.env.BLOB_READ_WRITE_TOKEN,
+    // Upload directly from the browser to Blob, bypassing Vercel's ~4.5MB
+    // serverless function body limit (so large image uploads work in production).
+    clientUploads: true,
   }),
 ]
