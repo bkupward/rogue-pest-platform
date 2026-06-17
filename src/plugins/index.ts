@@ -96,7 +96,13 @@ export const plugins: Plugin[] = [
   vercelBlobStorage({
     enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
     collections: {
-      media: true,
+      media: {
+        // Serve media from the direct public Blob CDN URL
+        // (https://<store>.public.blob.vercel-storage.com/<file>) instead of
+        // proxying through /api/media/file/* . The `url` field is regenerated on
+        // read, so existing docs pick this up too — no re-migration needed.
+        disablePayloadAccessControl: true,
+      },
     },
     token: process.env.BLOB_READ_WRITE_TOKEN,
     // Upload directly from the browser to Blob, bypassing Vercel's ~4.5MB
